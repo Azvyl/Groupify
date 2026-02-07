@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Grouping.js Tests</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="../js/grouping.js"></script>
+  <style>body{font-family:Arial,Helvetica,sans-serif;padding:1rem} .pass{color:green} .fail{color:red}</style>
+</head>
+<body>
+  <h1>grouping.js tests</h1>
+  <div id="results"></div>
+  <script>
+    const out = document.getElementById('results');
+    function assert(name, cond){
+      const el = document.createElement('div'); el.textContent = name + ': ' + (cond ? 'PASS' : 'FAIL'); el.className = cond ? 'pass' : 'fail'; out.appendChild(el); return cond;
+    }
+    (function(){
+      const data = ['A','B','C','D','E'].map((n,i)=>({name:n,rowIndex:i+2,originalIndex:i}));
+      const groups = window.Grouping.groupDeterministic(data, 2, {preserveOrder:false});
+      const cond = groups.length===2 && groups[0].map(x=>x.name).join(',')==='A,C,E' && groups[1].map(x=>x.name).join(',')==='B,D';
+      assert('Deterministic round-robin produces expected distribution', cond);
+    })();
+
+    (function(){
+      const arr = ['a','b','c','d','e','f'].map((n,i)=>({name:n, rowIndex:i+2, originalIndex:i}));
+      const g1 = window.Grouping.groupRandom(arr, 3, 'seed123');
+      const s1 = JSON.stringify(g1.map(g=>g.map(x=>x.name)));
+      const g2 = window.Grouping.groupRandom(arr, 3, 'seed123');
+      const s2 = JSON.stringify(g2.map(g=>g.map(x=>x.name)));
+      assert('Seeded shuffle reproducibility', s1 === s2);
+    })();
+
+    (function(){
+      const groups = [[{name:'Alice',rowIndex:2}], [{name:'Bob',rowIndex:3}]];
+      const rows = window.Grouping.formatGroupsAsTableRows(groups);
+      const cond = Array.isArray(rows) && rows.length===2 && rows[0].Group==='Group 1' && rows[1].Student==='Bob' && rows[1].OriginalRow===3;
+      assert('Formatting groups for export', cond);
+    })();
+  </script>
+</body>
+</html>

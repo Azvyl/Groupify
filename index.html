@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Groupify — Student Grouping</title>
+  <meta name="description" content="Groupify — split student names into groups.">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+  <script defer src="js/grouping.js"></script>
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <header class="container">
+    <h1>Groupify</h1>
+    <p class="subtitle">Split student lists into balanced groups in your browser and export the results.</p>
+  </header>
+
+  <main class="container">
+    <section aria-labelledby="upload-label">
+      <h2 id="upload-label">Upload student file</h2>
+      <p>Supported: .xlsx, .xls, .csv. Drop a file or use the file picker.</p>
+
+      <div id="drop-zone" class="drop-zone" tabindex="0" aria-label="File drop zone">
+        <input id="file-input" type="file" accept=".xlsx,.xls,.csv" />
+        <p>Drop file here or click to choose a file</p>
+      </div>
+      <div id="file-error" role="alert" class="error" aria-live="polite"></div>
+    </section>
+
+    <section aria-labelledby="controls-label">
+      <h2 id="controls-label">Controls</h2>
+      <form id="controls-form">
+        <div>
+          <label for="col-select">Select name column</label>
+          <select id="col-select" disabled></select>
+        </div>
+
+        <fieldset>
+          <legend>Grouping mode</legend>
+          <label><input id="mode-groups" name="mode" type="radio" value="groups" checked> Number of groups</label>
+          <label><input id="mode-size" name="mode" type="radio" value="size"> Students per group</label>
+
+          <div>
+            <label for="groups-count">Number of groups</label>
+            <input id="groups-count" type="number" min="1" value="3">
+          </div>
+          <div>
+            <label for="group-size">Students per group</label>
+            <input id="group-size" type="number" min="1" value="4" disabled>
+          </div>
+        </fieldset>
+
+        <div>
+          <label for="algo-select">Algorithm</label>
+          <select id="algo-select">
+            <option value="deterministic">deterministic</option>
+            <option value="random" selected>random</option>
+          </select>
+        </div>
+
+        <div id="seed-row" style="display:none;">
+          <label for="seed-input">Seed (optional)</label>
+          <input id="seed-input" type="text" />
+        </div>
+
+        <div>
+          <label><input id="preserve-order" type="checkbox"> Preserve order (chunking) for deterministic mode</label>
+        </div>
+
+        <div>
+          <label for="extra-select">Include additional columns in export (optional)</label>
+          <select id="extra-select" multiple size="4" disabled></select>
+        </div>
+
+        <div>
+          <button id="split-btn" type="button" disabled>Split groups</button>
+          <button id="export-xlsx" type="button" disabled>Export XLSX</button>
+          <button id="export-csv" type="button" disabled>Export CSV</button>
+        </div>
+      </form>
+    </section>
+
+    <section aria-labelledby="results-label">
+      <h2 id="results-label">Results</h2>
+      <div id="summary" aria-live="polite" class="summary"></div>
+      <div id="results" aria-live="polite"></div>
+    </section>
+
+  </main>
+
+  <footer class="container">
+    <p>Groupify</p>
+  </footer>
+</body>
+</html>

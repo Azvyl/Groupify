@@ -1,0 +1,25 @@
+:root{
+  --max-width:900px;
+  --gap:1rem;
+  --accent:#0b6;
+}
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.4;margin:0;padding:1rem;display:flex;flex-direction:column;align-items:center}
+.container{max-width:var(--max-width);width:100%;padding:0 1rem}
+.subtitle{color:#444;margin-top:-0.5rem}
+.drop-zone{border:2px dashed #ccc;border-radius:8px;padding:1rem;text-align:center;margin-bottom:0.5rem;cursor:pointer}
+.drop-zone:focus{outline:3px solid #9fdfb5}
+.error{color:#b00020;margin-top:0.5rem}
+fieldset{border:1px solid #eee;padding:1rem;border-radius:6px}
+label{display:block;margin-bottom:0.25rem}
+input[type="number"],select,input[type="text"]{width:100%;max-width:18rem}
+.summary{margin:0.5rem 0;padding:0.5rem;background:#f7f7f7;border-radius:6px}
+#results{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--gap);margin-top:1rem}
+.group-card{border:1px solid #e6e6e6;border-radius:6px;padding:0.75rem;background:#fff}
+.group-card h3{margin:0 0 0.25rem 0}
+.group-card ul{margin:0;padding-left:1rem}
+.focus-visible:focus{outline:3px solid #9fdfb5}
+@media (max-width:480px){
+  body{padding:0.5rem}
+  .container{padding:0}
+}
